@@ -13,7 +13,7 @@ import typing
 from typing import Union
 
 import cv2
-# import findit
+import findit
 import imutils
 import numpy as np
 import requests
@@ -209,7 +209,8 @@ def imread(data) -> np.ndarray:
     elif re.match(r'^https?://', data):
         return _open_image_url(data)
     elif os.path.isfile(data):
-        im = cv2.imread(data)
+        # im = cv2.imread(data)
+        im = cv2.imdecode(np.fromfile(data, dtype=np.uint8), -1) # 解决cv2.imread不能读取中文文件名问题
         if im is None:
             raise IOError("Image format error: %s" % data)
         return im
